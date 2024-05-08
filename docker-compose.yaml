@@ -1,0 +1,29 @@
+version: "3.7"
+services:
+  user_service :
+    container_name: user-service
+    image: user-service:v1.0
+    build:
+      context: .
+      args:
+        NODE_ENV: development
+    ports:
+      - "8081:3000"
+    volumes:
+      - ./src:/app/src
+    command: npm run start:dev
+    depends_on:
+      - mongo_db
+    restart: always
+
+  mongo_db:
+    container_name: mongo-db
+    image: "mongo:latest"
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - userdata:/var/lib/mongo/data
+
+volumes:
+  userdata:
